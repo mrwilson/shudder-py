@@ -1,0 +1,8 @@
+venv/
+.idea/
+dist/
+build/
+lib/
+bin/
+.pytest_cache/
+*.iml
