@@ -1,7 +1,8 @@
 class Media(object):
-    def __init__(self, title, media_id):
+    def __init__(self, title, media_id, entity):
         self.title = title
         self.id = media_id.split("/")[-1]
+        self.original = entity
 
 
 class Movie(Media):

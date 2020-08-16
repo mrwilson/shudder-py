@@ -26,8 +26,16 @@ class ShudderSession(object):
             headers={"csrf-token": csrf_token},
         )
 
-    def my_list(self) -> dict:
-        return self.session.get(Urls.API_MY_LIST).json()
+    def my_list(self) -> List[Media]:
+        results = self.session.get(Urls.API_MY_LIST).json()
+
+        def to_media(result: dict) -> Media:
+            if result["videoType"] == "movie":
+                return Movie(result["title"], result["id"], result)
+            else:
+                return Series(result["title"], result["id"], result)
+
+        return [to_media(result) for result in results]
 
     def search(self, search_term: str) -> List[Media]:
         results = self.session.get(
@@ -36,8 +44,8 @@ class ShudderSession(object):
 
         def to_media(result: dict) -> Media:
             if result["videoType"] == "movie":
-                return Movie(result["title"], result["links"]["detail"])
+                return Movie(result["title"], result["links"]["detail"], result)
             else:
-                return Series(result["title"], result["links"]["detail"])
+                return Series(result["title"], result["links"]["detail"], result)
 
         return [to_media(result) for result in results]
