@@ -3,7 +3,7 @@ from typing import List
 import requests
 from lxml import html
 
-from shudder.models import Media, Movie, Series
+from shudder.models import Media, Movie, Series, Review
 from shudder.urls import Urls
 from os import getenv as env
 
@@ -36,6 +36,13 @@ class ShudderSession(object):
                 return Series(result["title"], result["id"], result)
 
         return [to_media(result) for result in results]
+
+    def reviews(self, media: Media, per_page: int = 25) -> List[Review]:
+        results = self.session.get(
+            Urls.API_REVIEWS + "/" + media.id, params={"per": per_page}
+        ).json()
+
+        return [Review(result) for result in results["reviews"]]
 
     def search(self, search_term: str) -> List[Media]:
         results = self.session.get(
