@@ -2,6 +2,8 @@
 
 An **unofficial** Python API client for horror streaming service [Shudder](https://www.shudder.com)
 
+:warning: This is not fully tested code - use at your own risk :warning:
+
 ## Example code
 
 ```python
